@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: my-postgres
+    environment:
+      POSTGRES_PASSWORD: superuserpass
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+    stdin_open: true
+    tty: true
+
+volumes:
+  pgdata:

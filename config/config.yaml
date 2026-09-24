@@ -1,0 +1,4 @@
+host: localhost
+port: 5432
+database: mydb_ru
+sslmode: prefer
