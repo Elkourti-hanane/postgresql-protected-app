@@ -1,27 +1,26 @@
 services:
   postgres:
     image: postgres:18
-    container_name: my-postgres
+    container_name: my-postgres-task2
     environment:
       POSTGRES_PASSWORD: superuserpass
       POSTGRES_DB: mydb
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata2:/var/lib/postgresql
       - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
 
-  app:
+  pinger:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    image: pg-pinger:1.0
+    env_file:
+      - .env
     depends_on:
       - postgres
-    environment:
-      DB_HOST: postgres
-    stdin_open: true
-    tty: true
 
 volumes:
-  pgdata:
+  pgdata2:
