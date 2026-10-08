@@ -5,3 +5,4 @@ pgdata/
 .venv/
 venv/
 .vscode/
+.env.crud

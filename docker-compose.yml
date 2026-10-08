@@ -22,5 +22,29 @@ services:
     depends_on:
       - postgres
 
+  postgres-task3:
+    image: postgres:18
+    container_name: my-postgres-task3
+    environment:
+      POSTGRES_PASSWORD: superuserpass
+      POSTGRES_DB: shop
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata3:/var/lib/postgresql
+      - ./sql:/docker-entrypoint-initdb.d:ro
+  crud:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.crud
+    image: pg-crud:1.0
+    env_file:
+      - .env.crud
+    depends_on:
+      - postgres-task3
+    stdin_open: true
+    tty: true
+
 volumes:
   pgdata2:
+  pgdata3:
